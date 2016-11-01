@@ -1,5 +1,6 @@
 package com.learning.apl.apllearning;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,13 +23,24 @@ public class LoginActivity extends AppCompatActivity {
         passwordText = (EditText) findViewById(R.id.userPassword);
         loginButton = (Button) findViewById(R.id.loginButton);
 
+        AlertDialog.Builder errorAlertBuilder = new AlertDialog.Builder(this);
+        errorAlertBuilder.setMessage(ErrorConstants.REQUIRED_FIELDS_EMPTY).setTitle(ErrorConstants.ERROR);
+        errorAlertBuilder.setPositiveButton("OK", null);
+        final AlertDialog errorAlertDialog = errorAlertBuilder.create();
+
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userNameString = userNameText.getText().toString();
                 String passwordString = passwordText.getText().toString();
 
-                Toast.makeText(LoginActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
+                if(userNameString.isEmpty() || passwordString.isEmpty()){
+                    errorAlertDialog.show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
