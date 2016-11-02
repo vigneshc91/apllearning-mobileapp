@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText userNameText;
@@ -28,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         errorAlertBuilder.setPositiveButton("OK", null);
         final AlertDialog errorAlertDialog = errorAlertBuilder.create();
 
+        final RequestQueue loginRequestQueue = Volley.newRequestQueue(this);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,7 +42,8 @@ public class LoginActivity extends AppCompatActivity {
                 if(userNameString.isEmpty() || passwordString.isEmpty()){
                     errorAlertDialog.show();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
+                    new LoginService().UserLogin(loginRequestQueue, userNameString, passwordString);
                 }
 
             }
