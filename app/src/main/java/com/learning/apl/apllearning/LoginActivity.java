@@ -1,5 +1,7 @@
 package com.learning.apl.apllearning;
 
+import android.content.Intent;
+import android.graphics.DashPathEffect;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userNameText;
     private EditText passwordText;
     private Button loginButton;
+    private LoginService loginService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,11 @@ public class LoginActivity extends AppCompatActivity {
         errorAlertBuilder.setPositiveButton("OK", null);
         final AlertDialog errorAlertDialog = errorAlertBuilder.create();
 
-        final RequestQueue loginRequestQueue = Volley.newRequestQueue(this);
+        loginService = new LoginService(this);
+        if(loginService.isUserLoggedIn()){
+            Intent dashboardIntent = new Intent(this, DashboardActivity.class);
+            startActivity(dashboardIntent);
+        }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                     errorAlertDialog.show();
                 } else {
                     //Toast.makeText(LoginActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
-                    new LoginService().UserLogin(loginRequestQueue, userNameString, passwordString);
+                    loginService.userLogin(userNameString, passwordString);
                 }
 
             }

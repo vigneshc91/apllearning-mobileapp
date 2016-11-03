@@ -1,7 +1,11 @@
 package com.learning.apl.apllearning;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -23,15 +27,42 @@ import java.util.Map;
 
 public class LoginService {
 
+    private final Context context;
+    private final SharedPreferences prefs;
+    private RequestQueue loginRequestQueue;
     private String loginUrl = AppConstants.HOST_NAME + AppConstants.LOGIN_URL;
 
-    public void UserLogin(RequestQueue loginRequestQueue, final String userName, final String password){
+    public LoginService(Context context){
+        this.context = context;
+        prefs = context.getSharedPreferences(AppConstants.USER_PREF, Context.MODE_PRIVATE);
+        loginRequestQueue =  Volley.newRequestQueue(this.context);
+    }
+
+    public void userLogin(final String userName, final String password){
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, loginUrl, null,
                 new Response.Listener<JSONObject>(){
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("Response", response.toString());
+                        try{
+                            JSONObject ret = new JSONObject(response.toString());
+                            String status = ret.getString("status");
+                            String result = ret.getString("result");
+                            if(status.equals("true")){
+                                Toast.makeText(context,"Login success", Toast.LENGTH_SHORT).show();
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putBoolean(AppConstants.IS_USER_LOGGED_IN, true);
+                                editor.commit();
+                                Intent dashboardIntent = new Intent(context, DashboardActivity.class);
+                                dashboardIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(dashboardIntent);
+                            } else {
+                                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener(){
@@ -72,6 +103,10 @@ public class LoginService {
         };
 
         loginRequestQueue.add(request);
+    }
+
+    public boolean isUserLoggedIn(){
+        return prefs.getBoolean(AppConstants.IS_USER_LOGGED_IN, false);
     }
 
 }
