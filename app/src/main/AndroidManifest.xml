@@ -18,7 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DashboardActivity"></activity>
+        <activity
+            android:name=".DashboardActivity"
+            android:launchMode="singleInstance" />
+
+        <application android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:launchMode="singleInstance" />
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".SubjectActivity" />
+        <activity android:name=".MaterialActivity"></activity>
     </application>
 
 </manifest>

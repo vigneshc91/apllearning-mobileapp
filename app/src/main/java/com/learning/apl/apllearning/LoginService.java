@@ -32,6 +32,9 @@ public class LoginService {
     private final SharedPreferences prefs;
     private RequestQueue loginRequestQueue;
     private String loginUrl = AppConstants.HOST_NAME + AppConstants.LOGIN_URL;
+    private String logoutUrl = AppConstants.HOST_NAME + AppConstants.LOGOUT_URL;
+    private String getLoggedInUserUrl = AppConstants.HOST_NAME + AppConstants.GET_LOGGED_IN_USER_URL;
+    private boolean isLoggedIn;
 
     public LoginService(Context context){
         this.context = context;
@@ -107,8 +110,98 @@ public class LoginService {
         loginRequestQueue.add(request);
     }
 
+    public boolean getLoggedInUser(){
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getLoggedInUserUrl, null,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Response", response.toString());
+                        try{
+                            JSONObject ret = new JSONObject(response.toString());
+                            String status = ret.getString("status");
+                            SharedPreferences.Editor editor = prefs.edit();
+                            if(status.equals("true")){
+                                JSONObject result = ret.getJSONObject("result");
+                                editor.putString(AppConstants.USER_NAME, result.getString("user_name"));
+                                editor.putString(AppConstants.USER_ID, result.getString("id"));
+                                editor.commit();
+                                isLoggedIn = true;
+                            } else {
+                                editor.clear();
+                                editor.commit();
+                                isLoggedIn = false;
+                            }
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.response", error.toString());
+                    }
+                }
+        ){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("Content-Type", "application/x-www-form-urlencoded");
+                return parameters;
+            }
+        };
+
+        loginRequestQueue.add(request);
+
+        return isLoggedIn;
+    }
+
+    public void userLogout(){
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, logoutUrl, null,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("Response", response.toString());
+                        try{
+                            JSONObject ret = new JSONObject(response.toString());
+                            String status = ret.getString("status");
+                            SharedPreferences.Editor editor = prefs.edit();
+                            if(status.equals("true")){
+                                editor.clear();
+                                editor.commit();
+                                Intent loginIntent = new Intent(context, LoginActivity.class);
+                                context.startActivity(loginIntent);
+                                ((Activity)context).finish();
+                            }
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error.response", error.toString());
+                    }
+                }
+        ){
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("Content-Type", "application/x-www-form-urlencoded");
+                return parameters;
+            }
+        };
+
+        loginRequestQueue.add(request);
+
+    }
+
     public boolean isUserLoggedIn(){
-        return prefs.getBoolean(AppConstants.IS_USER_LOGGED_IN, false);
+//        return prefs.getBoolean(AppConstants.IS_USER_LOGGED_IN, false);
+        return getLoggedInUser();
     }
 
 }

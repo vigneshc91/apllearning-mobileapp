@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_dashboard"
@@ -21,4 +22,20 @@
         android:layout_marginStart="42dp"
         android:layout_marginTop="46dp"
         android:id="@+id/textView" />
+
+    <Button
+        android:id="@+id/viewSubjects"
+        android:layout_height="111dp"
+        android:layout_width="192dp"
+        android:text="View Subjects"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:background="@color/colorAccent"
+        android:layout_marginTop="49dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp" />
+
+
 </RelativeLayout>
