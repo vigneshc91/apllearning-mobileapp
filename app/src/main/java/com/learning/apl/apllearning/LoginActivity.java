@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         if(loginService.isUserLoggedIn()){
             Intent dashboardIntent = new Intent(this, DashboardActivity.class);
             startActivity(dashboardIntent);
+            finish();
         }
 
         loginButton.setOnClickListener(new View.OnClickListener() {

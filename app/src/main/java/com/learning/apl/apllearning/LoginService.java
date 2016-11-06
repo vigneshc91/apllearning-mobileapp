@@ -1,5 +1,6 @@
 package com.learning.apl.apllearning;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -57,6 +58,7 @@ public class LoginService {
                                 Intent dashboardIntent = new Intent(context, DashboardActivity.class);
                                 dashboardIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(dashboardIntent);
+                                ((Activity)context).finish();
                             } else {
                                 Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
                             }
