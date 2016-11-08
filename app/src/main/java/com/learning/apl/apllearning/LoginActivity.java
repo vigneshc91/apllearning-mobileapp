@@ -35,11 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         final AlertDialog errorAlertDialog = errorAlertBuilder.create();
 
         loginService = new LoginService(this);
-        if(loginService.isUserLoggedIn()){
-            Intent dashboardIntent = new Intent(this, DashboardActivity.class);
-            startActivity(dashboardIntent);
-            finish();
-        }
+        loginService.isUserLoggedIn();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

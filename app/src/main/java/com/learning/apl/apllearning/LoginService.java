@@ -34,7 +34,6 @@ public class LoginService {
     private String loginUrl = AppConstants.HOST_NAME + AppConstants.LOGIN_URL;
     private String logoutUrl = AppConstants.HOST_NAME + AppConstants.LOGOUT_URL;
     private String getLoggedInUserUrl = AppConstants.HOST_NAME + AppConstants.GET_LOGGED_IN_USER_URL;
-    private boolean isLoggedIn;
 
     public LoginService(Context context){
         this.context = context;
@@ -52,10 +51,25 @@ public class LoginService {
                         try{
                             JSONObject ret = new JSONObject(response.toString());
                             String status = ret.getString("status");
-                            String result = ret.getString("result");
                             if(status.equals("true")){
                                 Toast.makeText(context,"Login success", Toast.LENGTH_SHORT).show();
+                                JSONObject result = ret.getJSONObject("result");
                                 SharedPreferences.Editor editor = prefs.edit();
+                                UserModel user = new UserModel();
+                                user.setUserId(result.getString("id"));
+                                user.setUserName(result.getString("user_name"));
+                                user.setUserType(result.getString("user_type"));
+                                user.setGradeId(result.getString("grade_id"));
+                                user.setSection(result.getString("status"));
+                                user.setCreatedAt(result.getString("created_at"));
+                                user.setUpdatedAt(result.getString("updated_at"));
+                                user.setToken(result.getString("token"));
+                                user.setGrade(result.getString("grade"));
+                                user.setSection(result.getString("section"));
+                                editor.putString(AppConstants.USER_NAME, user.getUserName());
+                                editor.putString(AppConstants.USER_ID, user.getUserId());
+                                editor.putString(AppConstants.TOKEN, user.getToken());
+                                editor.putString(AppConstants.GRADE, user.getGrade());
                                 editor.putBoolean(AppConstants.IS_USER_LOGGED_IN, true);
                                 editor.commit();
                                 Intent dashboardIntent = new Intent(context, DashboardActivity.class);
@@ -63,6 +77,7 @@ public class LoginService {
                                 context.startActivity(dashboardIntent);
                                 ((Activity)context).finish();
                             } else {
+                                String result = ret.getString("result");
                                 Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e){
@@ -110,7 +125,7 @@ public class LoginService {
         loginRequestQueue.add(request);
     }
 
-    public boolean getLoggedInUser(){
+    public void isUserLoggedIn(){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getLoggedInUserUrl, null,
                 new Response.Listener<JSONObject>(){
                     @Override
@@ -121,15 +136,12 @@ public class LoginService {
                             String status = ret.getString("status");
                             SharedPreferences.Editor editor = prefs.edit();
                             if(status.equals("true")){
-                                JSONObject result = ret.getJSONObject("result");
-                                editor.putString(AppConstants.USER_NAME, result.getString("user_name"));
-                                editor.putString(AppConstants.USER_ID, result.getString("id"));
-                                editor.commit();
-                                isLoggedIn = true;
+                                Intent dashboardIntent = new Intent(context, DashboardActivity.class);
+                                context.startActivity(dashboardIntent);
+                                ((Activity)context).finish();
                             } else {
                                 editor.clear();
                                 editor.commit();
-                                isLoggedIn = false;
                             }
                         } catch (Exception e){
                             e.printStackTrace();
@@ -145,6 +157,26 @@ public class LoginService {
         ){
 
             @Override
+            public byte[] getBody() {
+                JSONObject parameters = new JSONObject();
+                String body = null;
+                try {
+                    parameters.put(AppConstants.TOKEN, prefs.getString(AppConstants.TOKEN, ""));
+                    body = parameters.toString();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                try {
+                    return  body.toString().getBytes("utf-8");
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("Content-Type", "application/x-www-form-urlencoded");
@@ -154,7 +186,6 @@ public class LoginService {
 
         loginRequestQueue.add(request);
 
-        return isLoggedIn;
     }
 
     public void userLogout(){
@@ -173,6 +204,8 @@ public class LoginService {
                                 Intent loginIntent = new Intent(context, LoginActivity.class);
                                 context.startActivity(loginIntent);
                                 ((Activity)context).finish();
+                            } else {
+                                Toast.makeText(context, ErrorConstants.LOGIN_FAILED, Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e){
                             e.printStackTrace();
@@ -188,6 +221,26 @@ public class LoginService {
         ){
 
             @Override
+            public byte[] getBody() {
+                JSONObject parameters = new JSONObject();
+                String body = null;
+                try {
+                    parameters.put(AppConstants.TOKEN, prefs.getString(AppConstants.TOKEN, ""));
+                    body = parameters.toString();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                try {
+                    return  body.toString().getBytes("utf-8");
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("Content-Type", "application/x-www-form-urlencoded");
@@ -197,11 +250,6 @@ public class LoginService {
 
         loginRequestQueue.add(request);
 
-    }
-
-    public boolean isUserLoggedIn(){
-//        return prefs.getBoolean(AppConstants.IS_USER_LOGGED_IN, false);
-        return getLoggedInUser();
     }
 
 }

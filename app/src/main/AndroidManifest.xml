@@ -29,7 +29,8 @@
             android:launchMode="singleInstance" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".SubjectActivity" />
-        <activity android:name=".MaterialActivity"></activity>
+        <activity android:name=".MaterialActivity" />
+        <activity android:name=".MaterialViewActivity"></activity>
     </application>
 
 </manifest>

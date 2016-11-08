@@ -34,12 +34,14 @@ public class MaterialActivity extends AppCompatActivity {
         materialService = new MaterialService(this);
         materialService.getMaterialsList(materialListAdapter, subjectId, AppConstants.INITIAL_START_VALUE, AppConstants.SIZE_VALUE);
 
+        final Intent materialIntent = new Intent(this, MaterialViewActivity.class);
+
         materialListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Object obj = materialListView.getItemAtPosition(i);
                 MaterialModel material = (MaterialModel) obj;
-                Intent materialIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.MATERIAL_URL + material.getUrl()));
+                materialIntent.putExtra(AppConstants.MATERIAL_URL, AppConstants.MATERIAL_URL + material.getUrl());
                 startActivity(materialIntent);
             }
         });

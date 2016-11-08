@@ -10,10 +10,12 @@ public class UserModel {
     private String userName;
     private String userType;
     private String gradeId;
+    private String status;
     private String grade;
     private String section;
     private String createdAt;
     private String updatedAt;
+    private String token;
 
     public void setUserId(String userId){
         this.userId = userId;
@@ -51,6 +53,14 @@ public class UserModel {
         this.grade = grade;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public String getGrade() {
         return grade;
     }
@@ -77,5 +87,13 @@ public class UserModel {
 
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

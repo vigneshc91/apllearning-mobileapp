@@ -27,11 +27,13 @@ import java.util.Map;
 public class ChangePasswordService {
 
     private Context context;
+    private SharedPreferences prefs;
     private RequestQueue changePasswordRequestQueue;
     private String changePasswordUrl = AppConstants.HOST_NAME + AppConstants.CHANGE_PASSWORD_URL;
 
     public ChangePasswordService(Context context){
         this.context = context;
+        prefs = context.getSharedPreferences(AppConstants.USER_PREF, Context.MODE_PRIVATE);
         changePasswordRequestQueue =  Volley.newRequestQueue(this.context);
     }
 
@@ -69,6 +71,7 @@ public class ChangePasswordService {
                 JSONObject parameters = new JSONObject();
                 String body = null;
                 try {
+                    parameters.put(AppConstants.TOKEN, prefs.getString(AppConstants.TOKEN, ""));
                     parameters.put(AppConstants.OLD_PASSWORD, oldPassword);
                     parameters.put(AppConstants.NEW_PASSWORD, newPassword);
                     body = parameters.toString();

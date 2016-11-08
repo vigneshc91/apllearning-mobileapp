@@ -57,7 +57,7 @@ public class MaterialService {
                                     material.setSubjectId(materialJson.getString("subject_id"));
                                     material.setTitle(materialJson.getString("title"));
                                     material.setUrl(materialJson.getString("url"));
-                                    material.setDescription(materialJson.getString("Description"));
+                                    material.setDescription(materialJson.optString("Description"));
                                     material.setCreatedAt(materialJson.getString("created_at"));
                                     material.setUpdatedAt(materialJson.getString("updated_at"));
                                     materailList.add(material);
@@ -82,6 +82,7 @@ public class MaterialService {
                 JSONObject parameters = new JSONObject();
                 String body = null;
                 try {
+                    parameters.put(AppConstants.TOKEN, prefs.getString(AppConstants.TOKEN, ""));
                     parameters.put(AppConstants.GRADE_ID, prefs.getString(AppConstants.GRADE_ID, ""));
                     parameters.put(AppConstants.SUBJECT_ID, subjectId);
                     parameters.put(AppConstants.START, start);
