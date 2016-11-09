@@ -34,7 +34,7 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".SubjectActivity" />
         </activity>
         <activity android:name=".MaterialViewActivity" android:launchMode="singleInstance">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MaterialActivity" />
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".DashboardActivity" />
         </activity>
     </application>
 

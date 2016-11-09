@@ -6,7 +6,7 @@ package com.learning.apl.apllearning;
 
 public class AppConstants {
 
-    public static final String HOST_NAME = "http://192.168.0.6/apllearning/";
+    public static final String HOST_NAME = "http://192.168.1.199/apllearning/";
     public static final String MATERIAL_URL = HOST_NAME + "storage/app/public/";
     public static final String LOGIN_URL = "student/login";
     public static final String LOGOUT_URL = "student/logout";
