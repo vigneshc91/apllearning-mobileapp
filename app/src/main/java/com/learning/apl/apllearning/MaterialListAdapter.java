@@ -33,7 +33,11 @@ public class MaterialListAdapter extends ArrayAdapter<MaterialModel> {
         TextView descriptionText = (TextView) convertView.findViewById(R.id.materialDescriptionText);
 
         titleText.setText(material.getTitle());
-        descriptionText.setText(material.getDescription());
+        if(!material.getDescription().equals("null")){
+            descriptionText.setText(material.getDescription());
+        } else {
+            descriptionText.setText("");
+        }
 
         return convertView;
     }

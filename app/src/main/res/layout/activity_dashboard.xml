@@ -11,18 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.learning.apl.apllearning.DashboardActivity">
 
-    <TextView
-        android:text="Welcome User"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="42dp"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="46dp"
-        android:id="@+id/textView" />
-
     <Button
         android:id="@+id/viewSubjects"
         android:layout_height="111dp"
@@ -31,11 +19,31 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:background="@color/colorAccent"
         android:layout_marginTop="49dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView"
+        android:layout_below="@+id/userNameTextView"
+        android:layout_alignLeft="@+id/userNameTextView"
+        android:layout_alignStart="@+id/userNameTextView"
         android:layout_marginLeft="11dp"
         android:layout_marginStart="11dp" />
+
+    <TextView
+        android:text="Welcome User"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="57dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/userNameTextView"
+        android:padding="10dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:textSize="30sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

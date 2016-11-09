@@ -7,5 +7,13 @@
         android:text="Subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/subjectListText" />
+        android:id="@+id/subjectListText"
+        android:padding="10dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:textSize="24sp" />
 </LinearLayout>

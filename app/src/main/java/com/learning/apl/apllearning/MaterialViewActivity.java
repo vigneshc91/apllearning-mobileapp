@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-public class MaterialViewActivity extends AppCompatActivity {
+public class MaterialViewActivity extends MenuActivity {
 
     private WebView materialWebView;
     private String materialUrl;

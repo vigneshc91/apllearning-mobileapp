@@ -36,7 +36,7 @@ public class MaterialService {
         materialRequestQueue =  Volley.newRequestQueue(this.context);
     }
 
-    public void getMaterialsList(final MaterialListAdapter materialListAdapter, final String subjectId, final int start, final int size){
+    public void getMaterialsList(final MaterialListAdapter materialListAdapter, final String subjectId, final int start){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getMaterialsUrl, null,
                 new Response.Listener<JSONObject>(){
                     @Override
@@ -47,7 +47,7 @@ public class MaterialService {
                             String status = ret.getString("status");
                             if(status.equals("true")){
                                 JSONArray result = ret.getJSONArray("result");
-                                List<MaterialModel> materailList = new ArrayList<MaterialModel>();
+                                List<MaterialModel> materialList = new ArrayList<MaterialModel>();
                                 for (int i = 0; i < result.length(); i++) {
                                     MaterialModel material = new MaterialModel();
                                     JSONObject materialJson = result.getJSONObject(i);
@@ -57,12 +57,17 @@ public class MaterialService {
                                     material.setSubjectId(materialJson.getString("subject_id"));
                                     material.setTitle(materialJson.getString("title"));
                                     material.setUrl(materialJson.getString("url"));
-                                    material.setDescription(materialJson.optString("Description"));
+                                    material.setDescription(materialJson.optString("description"));
                                     material.setCreatedAt(materialJson.getString("created_at"));
                                     material.setUpdatedAt(materialJson.getString("updated_at"));
-                                    materailList.add(material);
+                                    materialList.add(material);
                                 }
-                                materialListAdapter.addAll(materailList);
+                                materialListAdapter.addAll(materialList);
+                                if(result.length() < AppConstants.SIZE_VALUE){
+                                    MaterialActivity.hasMoreMaterial = false;
+                                } else {
+                                    MaterialActivity.hasMoreMaterial = true;
+                                }
                             }
                         } catch (Exception e){
                             e.printStackTrace();
@@ -86,7 +91,7 @@ public class MaterialService {
                     parameters.put(AppConstants.GRADE_ID, prefs.getString(AppConstants.GRADE_ID, ""));
                     parameters.put(AppConstants.SUBJECT_ID, subjectId);
                     parameters.put(AppConstants.START, start);
-                    parameters.put(AppConstants.SIZE, size);
+                    parameters.put(AppConstants.SIZE, AppConstants.SIZE_VALUE);
                     body = parameters.toString();
                 } catch (Exception e){
                     e.printStackTrace();

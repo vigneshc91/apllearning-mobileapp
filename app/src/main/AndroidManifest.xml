@@ -18,19 +18,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".DashboardActivity"
-            android:launchMode="singleInstance" />
+        <activity android:name=".DashboardActivity" android:launchMode="singleInstance" />
 
         <application android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".ChangePasswordActivity"
-            android:launchMode="singleInstance" />
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".SubjectActivity" />
-        <activity android:name=".MaterialActivity" />
-        <activity android:name=".MaterialViewActivity"></activity>
+            android:name=".ChangePasswordActivity" android:launchMode="singleInstance" >
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".DashboardActivity" />
+        </activity>
+        <activity android:name=".MenuActivity" android:launchMode="singleInstance" />
+        <activity android:name=".SubjectActivity" android:launchMode="singleInstance" >
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".DashboardActivity" />
+        </activity>
+        <activity android:name=".MaterialActivity" android:launchMode="singleInstance" >
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".SubjectActivity" />
+        </activity>
+        <activity android:name=".MaterialViewActivity" android:launchMode="singleInstance">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MaterialActivity" />
+        </activity>
     </application>
 
 </manifest>
