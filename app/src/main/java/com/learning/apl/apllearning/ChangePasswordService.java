@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -37,7 +40,7 @@ public class ChangePasswordService {
         changePasswordRequestQueue =  Volley.newRequestQueue(this.context);
     }
 
-    public void chanePassword(final String oldPassword, final String newPassword){
+    public void chanePassword(final String oldPassword, final String newPassword, final Button changePasswordBtn, final ProgressBar changePasswordProgressBar){
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, changePasswordUrl, null,
                 new Response.Listener<JSONObject>(){
@@ -53,6 +56,8 @@ public class ChangePasswordService {
                             } else {
                                 Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
                             }
+                            changePasswordBtn.setEnabled(true);
+                            changePasswordProgressBar.setVisibility(View.INVISIBLE);
                         } catch (Exception e){
                             e.printStackTrace();
                         }

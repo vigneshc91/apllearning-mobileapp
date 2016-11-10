@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 public class ChangePasswordActivity extends MenuActivity {
 
     private EditText oldPasswordText, newPasswordText, confirmNewPasswordText;
     private Button changePasswordBtn;
+    private ProgressBar changePasswordProgressBar;
     private ChangePasswordService changePasswordService;
 
     @Override
@@ -21,7 +23,7 @@ public class ChangePasswordActivity extends MenuActivity {
         oldPasswordText = (EditText) findViewById(R.id.oldPassword);
         newPasswordText = (EditText) findViewById(R.id.newPassword);
         confirmNewPasswordText = (EditText) findViewById(R.id.confirmNewPassword);
-
+        changePasswordProgressBar = (ProgressBar) findViewById(R.id.changePasswordProgressBar);
         changePasswordBtn = (Button) findViewById(R.id.changePasswordButton);
 
         changePasswordService = new ChangePasswordService(this);
@@ -43,10 +45,12 @@ public class ChangePasswordActivity extends MenuActivity {
                     errorAlertDialog.show();
                 } else {
                     if(!newPassword.equals(confirmNewPassword)){
-                        errorAlertBuilder.setMessage(ErrorConstants.PASSWORD_NOT_MATCH);
+                        errorAlertDialog.setMessage(ErrorConstants.PASSWORD_NOT_MATCH);
                         errorAlertDialog.show();
                     } else {
-                        changePasswordService.chanePassword(oldPassword, newPassword);
+                        changePasswordBtn.setEnabled(false);
+                        changePasswordProgressBar.setVisibility(View.VISIBLE);
+                        changePasswordService.chanePassword(oldPassword, newPassword, changePasswordBtn, changePasswordProgressBar);
                     }
                 }
             }

@@ -35,4 +35,5 @@ public class AppConstants {
     public static final String USER_PREF = "userPref";
     public static final String IS_USER_LOGGED_IN = "isUserLoggedIn";
     public static final String USER_ID = "user_id";
+
 }

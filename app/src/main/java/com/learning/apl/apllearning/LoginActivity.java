@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -18,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userNameText;
     private EditText passwordText;
     private Button loginButton;
+    private ProgressBar loginProgressBar;
     private LoginService loginService;
 
     @Override
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         userNameText = (EditText) findViewById(R.id.userName);
         passwordText = (EditText) findViewById(R.id.userPassword);
         loginButton = (Button) findViewById(R.id.loginButton);
+        loginProgressBar = (ProgressBar) findViewById(R.id.loginProgressBar);
 
         AlertDialog.Builder errorAlertBuilder = new AlertDialog.Builder(this);
         errorAlertBuilder.setMessage(ErrorConstants.REQUIRED_FIELDS_EMPTY).setTitle(ErrorConstants.ERROR);
@@ -47,7 +50,9 @@ public class LoginActivity extends AppCompatActivity {
                     errorAlertDialog.show();
                 } else {
                     //Toast.makeText(LoginActivity.this, "Login Clicked", Toast.LENGTH_SHORT).show();
-                    loginService.userLogin(userNameString, passwordString);
+                    loginButton.setEnabled(false);
+                    loginProgressBar.setVisibility(View.VISIBLE);
+                    loginService.userLogin(userNameString, passwordString, loginButton, loginProgressBar);
                 }
 
             }
